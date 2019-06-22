@@ -1,7 +1,8 @@
 # Paginación Automatizada Para Codeigniter | Pagination_Model 
 Reemplaza la librería de paginación con este simple modelo de codeigniter que hará el trabajo sucio por ti.
 
-[Muestra de la paginación funcionando](1.PNG)
+[Muestra #1 de la paginación funcionando](1.PNG)
+[Muestra #2 de la paginación funcionando](2.PNG)
 
 Para los desarrolladores que frecuentemente mostramos el contenido de más de una tabla en la que requerimos un sistema de paginación, el trabajo se vuelve más y más repetitivo.  
 
