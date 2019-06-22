@@ -3,15 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 final class Pagination_Model extends CI_Model
 {
-    public $pagina_actual;
-    public $total_resultados;
-    public $resultados_por_pagina;
     private $consulta;
-    public $offset;
-    public $tabla;
-    public $campos;
-    public $total_paginas;
+    private $campos;
+    private $pagina_actual;
+    private $total_resultados;
+    private $resultados_por_pagina;
+    private $offset;
+    private $tabla;
+    private $total_paginas;
     public $config;
+
+
 
     public function __construct()
     {
@@ -177,11 +179,16 @@ final class Pagination_Model extends CI_Model
 
     /*
      * @return mixed
-     * Devuelve la consulta que esta establecida para nuestro objeto
+     * Devuelve y establece el valor de la consulta que esta establecida para nuestro objeto
      * */
-    public function consulta()
+    public function getAndSetconsulta($campos = '')
     {
-        return $this->consulta = $this->db->select($this->campos)->from($this->tabla);
+        if($campos != '') {
+            $this->consulta = $this->db->select($campos)->from($this->tabla);
+        }else {
+            $this->consulta = $this->db->select($this->campos)->from($this->tabla);
+        }
+        return $this->consulta;
     }
 
     /*
@@ -189,8 +196,9 @@ final class Pagination_Model extends CI_Model
      * */
     public function init()
     {
-        $this->campos = "count(*)";
-        $this->total_resultados = array_values($this->consulta()->get()->result_array()[0])[0];
+        //Hacer la consulta seleccionando 'count(*)' cómo parámetro para no afectar el valor de la variable de clase 'campos'
+        $this->total_resultados = array_values($this->getAndSetconsulta("count(*)")->get()->result_array()[0])[0];
+        $this->consulta = $this->db->select($this->campos)->from($this->tabla); //restablecer el valor de la consulta
         $this->total_paginas = intval(ceil($this->total_resultados / $this->resultados_por_pagina));
     }
     /*
@@ -232,8 +240,7 @@ final class Pagination_Model extends CI_Model
         } else if ($this->pagina_actual < 1) {
             $this->setPaginaActual(1);
         }
-        $this->campos = "*";
-        return $this->consulta()->limit($this->resultados_por_pagina)->offset($this->offset);
+        return ($this->getConsulta()->limit($this->resultados_por_pagina)->offset($this->offset));
     }
     /*
      * @return $str Devuelve un string con el HTML necesario para la paginación

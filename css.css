@@ -98,3 +98,11 @@
 .ml-auto, .mx-auto {
     margin-left: auto!important;
 }
+
+.text-white {
+    color: #fff!important;
+}
+
+.bg-info {
+    background-color: #17a2b8!important;
+}
